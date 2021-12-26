@@ -39,7 +39,7 @@ const authUser =async(req, res)=>{
 // @access Private
 const getUserProfile =async(req, res)=>{
   try {
-    const user = await User.findById(req.user.id).select('-password')
+    const user = await User.findById(req.user._id).select('-password') //1
     
     if(user){
       res.json({
@@ -110,7 +110,7 @@ const registerUser =async(req, res)=>{
 // @access Private
 const UpdateUserProfile =async(req, res)=>{
   try {
-    const user = await User.findById(req.user.id).select('-password')
+    const user = await User.findById(req.user._id).select('-password') //2
     
     if(user){
       user.name = req.body.name || user.name
@@ -141,5 +141,23 @@ const UpdateUserProfile =async(req, res)=>{
   }
 }
 
+// @desc  Get all users
+// @route GET /api/users/
+// @access Private/Admin
+const getUsersByAdmin =async(req, res)=>{
+  try {
+    const users = await User.find({})
+    res.json(users)
+    
+  } catch (error) {
+    console.error(error)
+    res.json(404).json({
+      message: 'Users not found for Admin',
+      errorMessage: process.env.NODE_ENV==='production'? null : error
+    })
+  }
+}
 
-export {authUser, getUserProfile, registerUser, UpdateUserProfile}
+
+
+export {authUser, getUserProfile, registerUser, UpdateUserProfile, getUsersByAdmin}

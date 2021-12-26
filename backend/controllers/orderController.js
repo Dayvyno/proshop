@@ -24,7 +24,7 @@ const addOrderItems =async(req, res)=>{
       return 
     } else{
       const order = new Order ({
-        user: req.user.id,
+        user: req.user._id,  //3
         orderItems, 
         shippingAddress, 
         paymentMethod, 
@@ -116,7 +116,7 @@ const updateOrderToPaid =async(req, res)=>{
 // @access Private
 const getMyOrders =async(req, res)=>{
   try {
-    const order = await Order.find({user: req.user.id})
+    const order = await Order.find({user: req.user._id}) //4
     res.json(order)
 
   } catch (error) {
