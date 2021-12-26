@@ -1,8 +1,19 @@
 import React from 'react'
+import {useDispatch, useSelector} from 'react-redux'
+import {logout} from '../actions/userAction'
 import {LinkContainer} from 'react-router-bootstrap'
-import {Navbar, Nav, Container} from 'react-bootstrap'
+import {Navbar, Nav, Container, NavDropdown} from 'react-bootstrap'
 
 const Header = () => {
+
+  const dispatch = useDispatch()
+  const userLogin = useSelector(state => state.userLogin)
+  const {userInfo} = userLogin
+
+  const logoutHandler =()=>{
+    dispatch(logout())
+  }
+
   return (
     <header>      
       <Navbar bg="success" variant='dark' expand="lg" collapseOnSelect>
@@ -20,11 +31,22 @@ const Header = () => {
                   <span className="col material-icons">shopping_cart</span>cart
                 </Nav.Link>
               </LinkContainer>
+              {userInfo? (
+                <NavDropdown title={userInfo.name} id='username'>
+                  <LinkContainer variant="success" to='/profile'>
+                    <NavDropdown.Item className='dropdownLink'>Profile</NavDropdown.Item>
+                  </LinkContainer>
+                  <NavDropdown.Item className='dropdownLink' onClick={logoutHandler}>
+                    Log Out
+                  </NavDropdown.Item>
+                </NavDropdown>
+              ):
               <LinkContainer to={'/login'}>
                 <Nav.Link >
                   <span className="col material-icons">perm_identity</span>sign in
                 </Nav.Link>
               </LinkContainer>
+              }
             </Nav>
           </Navbar.Collapse>
         </Container>

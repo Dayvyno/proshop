@@ -17,3 +17,13 @@ main {
 .shopping-cart {
   padding-bottom: 1.4rem;
 }
+
+.dropdownLink:hover {
+  background-color: rgba(0, 153, 51, 0.4);
+  border-radius: 5px;
+}
+
+.poTextColor {
+  color: blue;
+  text-decoration: underline;
+}

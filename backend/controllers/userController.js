@@ -1,5 +1,5 @@
 import User from '../models/userModel.js'
-
+import generateToken from '../utils/generateToken.js'
 
 // @desc  Auth user & get Token
 // @route POST /api/users/login
@@ -7,7 +7,11 @@ import User from '../models/userModel.js'
 const authUser =async(req, res)=>{
   try {
     const {email, password } = req.body
-    
+    if (!email || !password){
+      res.status(400).json({
+        message: "All fields must be passed"
+      })
+    }
     const user = await User.findOne({email})
 
     if (user && (await user.matchPassword(password))){
@@ -16,18 +20,126 @@ const authUser =async(req, res)=>{
         name: user.name,
         email:user.email,
         isAdmin: user.isAdmin,
-        token: null
+        token: generateToken(user._id)
       })
     } else{
-      res.status(401).json({message: 'Invalid Email or Password'})
+      res.status(401).json({message: 'Invalid email or password'})
     }
 
   } catch (error) {
     res.status(400).json({
-      message: 'Invalid email or password',
-      systemMessage: error
+      message: 'Error logging in',
+      systemMessage: process.env.NODE_ENV==='production'? null: error
     })
   }
 }
 
-export {authUser}
+// @desc  Get user Profile
+// @route GET /api/users/profile
+// @access Private
+const getUserProfile =async(req, res)=>{
+  try {
+    const user = await User.findById(req.user.id).select('-password')
+    
+    if(user){
+      res.json({
+        _id: user._id,
+        name: user.name,
+        email:user.email,
+        isAdmin: user.isAdmin,
+      })
+    } else {
+      res.status(401).json({message: 'Could not fetch user profile'})
+    }
+  } catch (error) {
+    console.error(error)
+    res.json(404).json({
+      message: 'User not found',
+      errorMessage: process.env.NODE_ENV==='production'? null : error
+    })
+  }
+}
+
+// @desc  Register a new User
+// @route POST /api/users
+// @access Public
+const registerUser =async(req, res)=>{
+  try {
+    const {name, email, password} = req.body
+
+    if(!name || !email || !password){
+      res.status(400).json({
+        message: "All fields are required for a valid registration"
+      })
+    }
+
+    const userExists = await User.findOne({email})
+
+    if (userExists){
+      res.status(400).json({
+        message: 'Bad Request, User already exists'
+      })
+    } else if (!userExists){
+      const user = await User.create({
+        name,
+        email,
+        password
+      })
+      if (user){
+        res.status(201).json({
+            _id: user._id,
+            name: user.name,
+            email:user.email,
+            isAdmin: user.isAdmin,
+            token: generateToken(user._id)
+        })
+      }
+    }
+
+
+  } catch (error) {
+    res.status(400).json({
+      message: 'Could not register user',
+      errorMessage: process.env.NODE_ENV === 'production'? null : error
+    })
+  }
+}
+
+// @desc  Update user Profile
+// @route PUT /api/users/profile
+// @access Private
+const UpdateUserProfile =async(req, res)=>{
+  try {
+    const user = await User.findById(req.user.id).select('-password')
+    
+    if(user){
+      user.name = req.body.name || user.name
+      if (req.body.password){
+        user.password = req.body.password || user.password
+      } 
+
+      const updatedUser = await user.save()
+
+      if (updatedUser){
+        res.json({
+          _id: updatedUser._id,
+          name: updatedUser.name,
+          email:updatedUser.email,
+          isAdmin: updatedUser.isAdmin,
+          token: generateToken(updatedUser._id)
+        })
+      } else {res.status(400).json({message: "Could not access new profile change"})}
+
+    } else {res.status(401).json({message: 'Could not fetch user profile'})}
+
+  } catch (error) {
+    console.error(error)
+    res.json(404).json({
+      message: 'User not found',
+      errorMessage: process.env.NODE_ENV==='production'? null : error
+    })
+  }
+}
+
+
+export {authUser, getUserProfile, registerUser, UpdateUserProfile}

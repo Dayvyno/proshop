@@ -68,7 +68,7 @@ const orderSchema = mongoose.Schema({
   }
 
 }, {
-  timestamps: true //This will enable the schema to be created authomatically
+  timestamps: true
 })
 
 const Order = mongoose.model('Order', orderSchema)

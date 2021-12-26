@@ -6,9 +6,6 @@ import { useDispatch, useSelector} from 'react-redux';
 import { listProductDetails } from '../actions/productActions';
 import Loader from '../components/Loader';
 import Message from '../components/Message'
-// import { createBrowserHistory } from 'history';
-// import history from 'history/browser';
-// import { createMemoryHistory } from 'history';
 
 
 
