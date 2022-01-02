@@ -5,7 +5,10 @@ import {
   getUserProfile, 
   registerUser, 
   UpdateUserProfile,
-  getUsersByAdmin
+  getUsersByAdmin,
+  deleteUserByAdmin,
+  adminGetUserById,
+  updateUserByAdmin
 } from "../controllers/userController.js";
 import { protect, admin} from '../middleware/authMiddleware.js';
 
@@ -13,7 +16,14 @@ import { protect, admin} from '../middleware/authMiddleware.js';
 router.post('/', registerUser).get('/', protect, admin, getUsersByAdmin)
 router.post('/login', authUser)
 router.get('/profile', protect, getUserProfile)
-router.put('/profile', protect, UpdateUserProfile)
+  .put('/profile', protect, UpdateUserProfile)
+
+
+router.delete('/:id', protect, admin, deleteUserByAdmin)
+  .get('/:id', protect, admin, adminGetUserById)
+
+router.put('/user/:id', protect, admin, updateUserByAdmin)
+
 
 
 export default router

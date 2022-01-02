@@ -6,6 +6,7 @@ import {Link, useLocation, useNavigate} from 'react-router-dom'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
+import Meta from '../components/Meta'
 
 const RegisterScreen = () => {
 
@@ -42,6 +43,7 @@ const RegisterScreen = () => {
 
   return (
     <FormContainer>
+      <Meta title='Register' />
       <h1>Sign Up</h1>
       {message && <Message variant={'danger'}>{message}</Message>}
       {error && <Message variant={'danger'}>{error}</Message>}
@@ -70,8 +72,9 @@ const RegisterScreen = () => {
           <Form.Control onChange={(e)=>setConfirmPassword(e.target.value)} 
           type='password' placeholder='Confirm password' value={confirmPassword}/>
         </Form.Group>
-
-        <Button className='my-2' type='submit' variant='primary'>Register</Button>
+        <div className='d-flex justify-content-center'>
+          <Button className='my-2' type='submit' variant='primary'>Register</Button>
+        </div>
       </Form>
       <Row className='py-2'>
         <Col>

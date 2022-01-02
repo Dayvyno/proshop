@@ -158,6 +158,83 @@ const getUsersByAdmin =async(req, res)=>{
   }
 }
 
+// @desc  Delete user
+// @route DELETE /api/users/:id
+// @access Private/Admin
+const deleteUserByAdmin =async(req, res)=>{
+  try {
+    const user = await User.findById(req.params.id)
+    if (user){
+      user.remove()
+      res.json({message: "User Deleted"})
+    }else{
+      res.status(404).json('User not found')
+    }
+    
+  } catch (error) {
+    console.error(error)
+    res.json(404).json({
+      message: 'Admin could not delete user',
+      errorMessage: process.env.NODE_ENV==='production'? null : error
+    })
+  }
+}
 
+// @desc  Get user by ID
+// @route GET /api/users/:id
+// @access Private/Admin
+const adminGetUserById =async(req, res)=>{
+  try {
+    const user = await User.findById(req.params.id).select('-password')
+    if (user && user._id){
+      res.json(user)
+    }else{
+      res.status(401).json('User not found')
+    }
 
-export {authUser, getUserProfile, registerUser, UpdateUserProfile, getUsersByAdmin}
+    
+  } catch (error) {
+    console.error(error)
+    res.json(404).json({
+      message: 'User not found',
+      errorMessage: process.env.NODE_ENV==='production'? null : error
+    })
+  }
+}
+
+// @desc  Update user Profile by Admin
+// @route PUT /api/users/user/:
+// @access Private/Admin
+const updateUserByAdmin =async(req, res)=>{
+  try {
+    const user = await User.findById(req.params.id).select('-password') 
+    
+    if(user && user._id){
+      user.name = req.body.name || user.name
+      user.isAdmin = req.body.isAdmin 
+
+      const updatedUser = await user.save()
+
+      res.json(updatedUser)
+
+    } else {res.status(401).json({message: 'Could not change user profile'})}
+
+  } catch (error) {
+    console.error(error)
+    res.json(404).json({
+      message: 'Admin can not change user profile',
+      errorMessage: process.env.NODE_ENV==='production'? null : error
+    })
+  }
+}
+
+export {
+  authUser, 
+  getUserProfile, 
+  registerUser, 
+  UpdateUserProfile, 
+  getUsersByAdmin, 
+  deleteUserByAdmin,
+  adminGetUserById,
+  updateUserByAdmin
+}

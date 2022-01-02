@@ -1,26 +1,32 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
-import {Row, ListGroup, Image, Col, Card} from 'react-bootstrap'
+import {Row, ListGroup, Image, Col, Button, Card} from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector} from 'react-redux'
 import Message from '../components/Message'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import Loader from '../components/Loader'
 import { 
   getOrderDetailsAction, 
+  orderDeliverAction, 
   orderPaymentAction, 
   orderPaymentResetAtion } from '../actions/orderActions'
 import { PayPalButton } from "react-paypal-button-v2"
+import { ORDER_DELIVER_RESET } from '../constants/orderConstants'
 
 
 
 const OrderScreen = () => {
 
   const params = useParams()
+  const navigate = useNavigate()
 
   const [sdkReady, setSdkReady] = useState(false)
 
   const dispatch = useDispatch()
+
+  const userLogin = useSelector(state => state.userLogin)
+  const {userInfo} = userLogin
 
   const orderDetailsReducer = useSelector(state => state.orderDetailsReducer)
   const {loading, order, error} = orderDetailsReducer
@@ -28,7 +34,16 @@ const OrderScreen = () => {
   const orderPaymentReducer = useSelector(state => state.orderPaymentReducer)
   const {loading: loadingPay, success:successPay} = orderPaymentReducer
 
+  const orderDeliverReducer = useSelector(state => state.orderDeliverReducer)
+  const {
+    loading: loadingDeliver,
+    success: successDeliver
+  } = orderDeliverReducer
+
   useEffect(()=>{
+    if (!userInfo){
+      navigate('/login')
+    }
 
     const addPayPalScript = async ()=>{
       const script = document.createElement('script')
@@ -43,9 +58,11 @@ const OrderScreen = () => {
     //Below conditional will cause the dispatch to happen twice
     //1. When !order
     //2. When successPay. this happens later after running successPaymentHandler
-    if (!order || successPay){ 
-      dispatch(getOrderDetailsAction(params.id))
+    if (!order || successPay || successDeliver){ 
+      console.log(params.id)
+      dispatch({type: ORDER_DELIVER_RESET})
       dispatch(orderPaymentResetAtion()) //without this, when you pay, it keeps refreshing
+      dispatch(getOrderDetailsAction(params.id))
     } else if(!order.isPaid ){
       if(!window.paypal){
         addPayPalScript()
@@ -54,11 +71,11 @@ const OrderScreen = () => {
       }
     }
   
-  }, [dispatch, params.id, order, successPay])
+  }, [dispatch, params.id, order, successPay, successDeliver, navigate, userInfo])
 
   if (order){
     order.itemsPrice = order.orderItems.reduce((total, value)=>
-    total + value.price * value.qty*500, 0)
+    total + value.price * value.qty, 0)
   }
 
   const successPaymentHandler = (paymentResult)=>{
@@ -66,8 +83,14 @@ const OrderScreen = () => {
     dispatch(orderPaymentAction(params.id, paymentResult))
   }
 
+  const deliverhandler = ()=>{
+    dispatch(orderDeliverAction(order))
+
+  }
+
   return (
     <>
+      {loadingDeliver && <Loader/>}
       {loading && <Loader />}
       {error && <Message variant={'danger'}>{error} </Message> }
       {order && <>
@@ -87,7 +110,7 @@ const OrderScreen = () => {
               </p>
 
               {order.isDelivered? 
-              <Message variant={'success'}>Delivered</Message>:
+              <Message variant={'success'}>Delivered on:{' '}{order.deliveredAt} </Message>:
               <Message variant={'danger'}>Delivery Pending</Message>
             }
 
@@ -116,8 +139,8 @@ const OrderScreen = () => {
                             <Link to={`/product/${item.product}`}>{item.name}</Link>
                           </Col>
                           <Col md={4} >
-                            {item.qty} x &#8358;{(Number(item.price*500)).toLocaleString()} = 
-                            &#8358;{(Number(item.qty * 500 * item.price)).toLocaleString()}
+                            {item.qty} x &#8358;{(Number(item.price)).toLocaleString()} = 
+                            &#8358;{(Number(item.qty * item.price)).toLocaleString()}
                           </Col>
                         </Row>
                       </ListGroup.Item>
@@ -170,6 +193,19 @@ const OrderScreen = () => {
                         onSuccess={successPaymentHandler} 
                       />
                     }
+                  </ListGroup.Item>
+                )
+              }
+              {
+                userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                  
+                  <ListGroup.Item>
+                    <Button
+                      type='button' className='btn btn-block'
+                      onClick={deliverhandler}
+                    >
+                      Mark as Delivered
+                      </Button>
                   </ListGroup.Item>
                 )
               }

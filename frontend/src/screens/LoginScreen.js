@@ -6,6 +6,7 @@ import {Link, useLocation, useNavigate} from 'react-router-dom'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
+import Meta from '../components/Meta'
 
 const LoginScreen = () => {
 
@@ -35,6 +36,7 @@ const LoginScreen = () => {
 
   return (
     <FormContainer>
+      <Meta title='Login to DayveOshop'/>
       <h1>Sign In</h1>
       {error && <Message variant={'danger'}>{error}</Message>}
       {loading && <Loader/>}

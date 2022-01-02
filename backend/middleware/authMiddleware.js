@@ -15,7 +15,7 @@ const protect = async(req, res, next)=>{
   } catch (error) {
     console.error(error)
     res.status(401).json({
-      message: 'catched UnAuthorized, token failed',
+      message: 'UnAuthorized User',
       errorMessage: process.env.NODE_ENV==='production'? null : error
     })
   }

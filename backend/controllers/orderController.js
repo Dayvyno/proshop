@@ -116,7 +116,7 @@ const updateOrderToPaid =async(req, res)=>{
 // @access Private
 const getMyOrders =async(req, res)=>{
   try {
-    const order = await Order.find({user: req.user._id}) //4
+    const order = await Order.find({user: req.user._id})
     res.json(order)
 
   } catch (error) {
@@ -127,6 +127,56 @@ const getMyOrders =async(req, res)=>{
 }
 
 
+// @desc  Get all orders
+// @route GET /api/orders
+// @access Private/Admin
+const getOrders =async(req, res)=>{
+  try {
+    const orders = await Order.find({}).populate('user', 'id name')
+    res.json(orders)
+
+  } catch (error) {
+    res.status(400).json({
+      message: 'Orders not found'
+    })
+  }
+}
 
 
-export {addOrderItems, getOrderById, updateOrderToPaid, getMyOrders}
+// @desc  Update order to delivered
+// @route PUT /api/orders/:id/delivered
+// @access Private/Admin
+const updateOrderToDelivered =async(req, res)=>{
+  try {
+    const order = await Order.findById(req.params.id)
+  if (order){
+    //This payment method is for PayPal. Another payment method will likely different varriables
+    order.isDelivered = true
+    order.deliveredAt = Date.now()
+
+    const updatedOrder = await order.save()
+
+    res.json(updatedOrder)
+
+  } else {
+    res.status(400).json({
+      message: "Server error, order could not be updated to delivered"
+    })
+  }
+
+  } catch (error) {
+    res.status(400).json({
+      message: 'Order could not be updated'
+    })
+  }
+}
+
+
+export {
+  addOrderItems, 
+  getOrderById, 
+  updateOrderToPaid, 
+  getMyOrders, 
+  getOrders,
+  updateOrderToDelivered
+}

@@ -4,6 +4,7 @@ import { addToCart, removeFromCart } from '../actions/cartActions'
 import {useDispatch, useSelector} from 'react-redux'
 import Message from '../components/Message'
 import {Row, Col, ListGroup, Image, Form, Button, Card} from 'react-bootstrap'
+import Meta from '../components/Meta'
 
 const CartScreen = () => {
 
@@ -34,6 +35,13 @@ const CartScreen = () => {
   },[dispatch, productId, qty])
   
   return (
+    <>
+    <Meta />
+    <Row>
+      <Col>
+        <Link to={'/'}>shop more<span className="col material-icons">shopping_cart</span></Link>
+      </Col>
+    </Row>
     <Row>
       <Col md={8} >
         <h1 className='shopping-cart'>Shopping Cart</h1>
@@ -51,7 +59,7 @@ const CartScreen = () => {
                     <Link to={`/product/${item.product}`}>{item.name} </Link>
                   </Col>
                   <Col md={2} >
-                    &#8358;{`${Number(item.price*500*item.qty).toLocaleString()}`} 
+                    &#8358;{`${(Number(item.price * qty)).toLocaleString()}`} 
                   </Col>
                   <Col md={2}>
                     <Form.Select 
@@ -83,7 +91,7 @@ const CartScreen = () => {
               <h2>
                 Subtotal ({cartItems.reduce((acc, item)=>acc + item.qty, 0)}) items
               </h2>
-              &#8358;{Number(500*cartItems.reduce((acc, item)=> acc + item.price*item.qty, 0)).toLocaleString()}
+              &#8358;{Number(cartItems.reduce((acc, item)=> acc + item.price*item.qty, 0)).toLocaleString()}
             </ListGroup.Item>
             <ListGroup.Item>
               <Button type='button' className='btn-block' disabled={cartItems.length===0} 
@@ -95,6 +103,7 @@ const CartScreen = () => {
         </Card>
       </Col>
     </Row>
+  </>
   )
 }
 

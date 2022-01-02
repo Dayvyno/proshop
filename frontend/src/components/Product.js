@@ -22,7 +22,7 @@ const Product = ({product}) => {
               value={product.rating} 
               text={`${product.numReviews} reviews`} />
           </Card.Title>
-          <Card.Text as='h3'>&#8358;{`${Number(product.price*500).toLocaleString()}`} </Card.Text>
+          <Card.Text as='h3'>&#8358;{`${Number(product.price).toLocaleString()}`} </Card.Text>
         </Card.Body>
       </Card>
     </>

@@ -22,7 +22,7 @@ const userSchema = mongoose.Schema({
   }
 
 }, {
-  timestamps: true //This will enable the schema to be created authomatically
+  timestamps: true 
 })
 
 userSchema.methods.matchPassword = async function(enteredPassword){

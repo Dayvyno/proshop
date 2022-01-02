@@ -17,7 +17,7 @@ const PlaceOrderScreen = () => {
 
   // Calculate Prices
   cart.itemsPrice = cart.cartItems.reduce((total, value)=>
-  total + value.price * value.qty*500, 0)
+  total + value.price * value.qty, 0)
 
   cart.shippingPrice = Math.round(Number(cart.itemsPrice * 0.1)) 
 
@@ -86,8 +86,8 @@ const PlaceOrderScreen = () => {
                             <Link to={`/product/${item.product}`}>{item.name}</Link>
                           </Col>
                           <Col md={4} >
-                            {item.qty} x &#8358;{(item.price*500).toLocaleString()} = 
-                            &#8358;{(item.qty * 500 * item.price).toLocaleString()}
+                            {item.qty} x &#8358;{(item.price).toLocaleString()} = 
+                            &#8358;{(item.qty * item.price).toLocaleString()}
                           </Col>
                         </Row>
                       </ListGroup.Item>
