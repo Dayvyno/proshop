@@ -84,7 +84,7 @@ const ProductScreen = () => {
                 <ListGroup.Item>
                   <Row>
                     <Col>Price:</Col>
-                    <Col>&#8358;{`${Number(product.price*500).toLocaleString()}`}</Col>
+                    <Col>&#8358;{`${Number(product.price).toLocaleString()}`}</Col>
                   </Row>
                 </ListGroup.Item>
               </ListGroup>
