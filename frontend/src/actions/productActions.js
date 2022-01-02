@@ -29,7 +29,6 @@ import {
 export const listProducts = (searchparams='', pageNumber='') => async(dispatch)=>{ //
   try {
     dispatch({type: PRODUCT_LIST_REQUEST})
-    console.log(searchparams)
 
     const {data} = await axios.get(
       `/api/products?searchparams=${searchparams}&pageNumber=${pageNumber}` //
