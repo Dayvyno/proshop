@@ -9,7 +9,6 @@ const SearchBox = () => {
   return (
     <>
     <Form.Group className="mb-3 rounded" controlId="formBasicPassword">
-      <Form.Label>search: {' '}</Form.Label>
       <Form.Control type="search" placeholder="search products..." 
         value = {searchParams.get("search") || ""}
       onChange = { event=>{
