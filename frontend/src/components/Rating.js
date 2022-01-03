@@ -1,11 +1,12 @@
 import React from 'react'
+import {Row, Col} from 'react-bootstrap'
 // import PropTypes from 'prop-types'
 
 
 const Rating = ({value, text, color}) => {
   return (
-    <div className='rating'>
-      <span>
+    <Row className='rating rating1'>
+      <Col xs={2} md={1} >
         <span className="material-icons" style={{color}}> 
           {
           value>=1 
@@ -15,8 +16,8 @@ const Rating = ({value, text, color}) => {
           : "star_outline"
           }
         </span>
-      </span>
-      <span>
+      </Col>
+      <Col xs={2} md={1}>
         <span className="material-icons" style={{color}}> 
           {
           value>=2
@@ -26,8 +27,8 @@ const Rating = ({value, text, color}) => {
           : "star_outline"
           }
         </span>
-      </span>
-      <span>
+      </Col>
+      <Col xs={2} md={1}>
         <span className="material-icons" style={{color}}> 
           {
           value>=3
@@ -37,8 +38,8 @@ const Rating = ({value, text, color}) => {
           : "star_outline"
           }
         </span>
-      </span>
-      <span>
+      </Col >
+      <Col xs={2} md={1}>
         <span className="material-icons" style={{color}}> 
           {
           value>=4
@@ -48,8 +49,8 @@ const Rating = ({value, text, color}) => {
           : "star_outline"
           }
         </span>
-      </span>
-      <span>
+      </Col>
+      <Col xs={2} md={1}>
         <span className="material-icons" style={{color}}>
           {
           value>=5
@@ -59,10 +60,10 @@ const Rating = ({value, text, color}) => {
           : "star_outline"
           }
           </span>
-      </span>
-      <span>{text && text}</span>
+      </Col>
+      <Col xs={12}>{text && text}</Col>
       
-    </div>
+    </Row>
   )
 }
 
