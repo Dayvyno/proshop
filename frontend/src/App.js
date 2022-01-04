@@ -1,4 +1,5 @@
 import React from 'react';
+import {Container} from 'react-bootstrap'
 import { Routes, Route} from "react-router-dom";
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -21,8 +22,8 @@ import OrderListScreen from './screens/OrderListScreen';
 const App =()=>{
   return (
     <>
-    <Header/>
-      <main className='py-2 main-body'>
+      <Header/>
+      <Container className='py-2'>
         <Routes>
           <Route path={'/product/:id'} element={ <ProductScreen />} />
           <Route path= {`/cart/:id/*`} element={<CartScreen />} />
@@ -43,7 +44,7 @@ const App =()=>{
           <Route path='/page/:pageNumber' element={ <HomeScreen/> }/>
           <Route path='/' element={ <HomeScreen/> }/>
         </Routes>
-      </main>
+      </Container>
       <Footer/>
     </>
   );

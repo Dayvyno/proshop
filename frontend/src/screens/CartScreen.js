@@ -43,7 +43,7 @@ const CartScreen = () => {
       </Col>
     </Row>
     <Row>
-      <Col md={8} >
+      <Col md={8}>
         <h1 className='shopping-cart'>Shopping Cart</h1>
         {cartItems.length===0? <Message>
           Your cart is empty <Link to={`/`} >Go Back</Link>

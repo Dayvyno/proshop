@@ -1,10 +1,32 @@
-main {
+/* main {
+  width: 80%;
+  margin: 0 auto;
   min-height: 80vh;
+
+} */
+
+body {
+  min-height: 80vh;
+}
+.latest {
+  text-align: center;
+  margin-top: 10px;
+  font-family: 'Tangerine', serif;
+  text-shadow: 4px 4px 4px #aaa;
 }
 
 @media screen and (max-width: 600px) {
   body {
     font-size: 10px;
+  }
+  h1 {
+    font-size: 16px;
+  }
+  h2 {
+    font-size: 14px;
+  }
+  h3 {
+    font-size: 12px;
   }
 }
 
@@ -67,4 +89,13 @@ main {
 
 .carousel a {
   margin: 0 auto;
+}
+
+@media screen and (max-width: 600px) {
+  .carousel img {
+    height: 200px;
+    padding: 30px;
+    margin: 20px;
+    border-radius: 30%;
+  }
 }

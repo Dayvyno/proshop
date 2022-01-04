@@ -37,7 +37,7 @@ const HomeScreen = () => {
     {!searchparams? <ProductCarousel/>: (
     <Link to={'/'}  ><span className="material-icons">home</span></Link>
     )}
-     <h1>Latest Products</h1> 
+     <h1 className='latest'>Latest Products</h1> 
      {loading 
      ? <Loader/> 
      : error
