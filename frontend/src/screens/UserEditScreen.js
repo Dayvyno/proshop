@@ -31,7 +31,6 @@ const UserEditScreen = () => {
 
 
   useEffect(() => {
-  
     if (successUpdate){
       dispatch(resetAdminUpdatedField())
       navigate('/admin/userlist')

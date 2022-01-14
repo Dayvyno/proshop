@@ -5,10 +5,7 @@ import {
   CLEAR_CAT
 } from "../constants/cartConstants";
 
-export const cartReducer = (state={
-  cartItems:[], 
-  shippingAddress:{}
-}, action) =>{
+export const cartReducer = (state={cartItems:[], shippingAddress:{}, paymentMethod: ''}, action)=>{
 
   switch (action.type) {
     case CART_ADD_ITEM:
@@ -46,7 +43,9 @@ export const cartReducer = (state={
       }
     case CLEAR_CAT:
       return {  cartItems:[], 
-        shippingAddress:{}}
+        shippingAddress:{},
+        paymentMethod: ''
+      }
     
     default:
       return state;

@@ -23,7 +23,7 @@ const App =()=>{
   return (
     <>
       <Header/>
-      <Container className='py-2'>
+      <Container className='py-2 body'>
         <Routes>
           <Route path={'/product/:id'} element={ <ProductScreen />} />
           <Route path= {`/cart/:id/*`} element={<CartScreen />} />
@@ -32,6 +32,7 @@ const App =()=>{
           <Route path= '/register' element = {<RegisterScreen/>} />
           <Route path='/profile' element={<ProfileScreen />} />
           <Route path='/login/shipping' element={<ShippingScreen />} />
+          <Route path='/register/shipping' element={<ShippingScreen />} />
           <Route path='/payment' element={<PaymentScreen />} />
           <Route path='/placeorder' element={<PlaceOrderScreen />} />
           <Route path='/order/:id' element={<OrderScreen />} />
@@ -42,7 +43,7 @@ const App =()=>{
           <Route path='/admin/createproduct/:id/edit' element={<ProductEditScreen/>}/>
           <Route path='/admin/orderlist' element={<OrderListScreen/>}/>
           <Route path='/page/:pageNumber' element={ <HomeScreen/> }/>
-          <Route path='/' element={ <HomeScreen/> }/>
+          <Route path='/' element={ <HomeScreen/> }/> 
         </Routes>
       </Container>
       <Footer/>

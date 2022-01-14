@@ -54,7 +54,7 @@ const PaymentScreen = () => {
               name='paymentMethod' 
               value='PayPal' 
               checked ={cart.paymentMethod==="PayPal"}
-              onChange={(e)=>setPaymentMethod(e.target.value)} 
+              onChange ={(e)=>setPaymentMethod(e.target.value)} 
               ></Form.Check>
             <Form.Check 
               type='radio' 
@@ -78,7 +78,9 @@ const PaymentScreen = () => {
               ></Form.Check>
           </Col>      
         </Form.Group> 
-        <Button className='my-2' type='submit' variant='primary'>Continue</Button>
+        <Form.Group className='d-flex justify-content-center'>
+         <Button className='my-2 btn-block' type='submit' variant='primary'>Continue</Button>
+        </Form.Group>
       </Form>
     </FormContainer>
   )

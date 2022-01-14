@@ -49,13 +49,15 @@ export const productDetailsReducer = (state={product: {reviews:[]}}, action) =>{
     case PRODUCT_DETAILS_REQUEST:
       return {loading: true, ...state}
       case PRODUCT_DETAILS_SUCCESS:
-        return Object.assign({}, state, {product: action.payload, loading: false})
+        return {...state, loading:false, product: action.payload}
       case PRODUCT_DETAILS_FAIL:
-        return {loading: false, state, error: action.payload}
+        return {...state, loading: false, state, error: action.payload}
       default:
         return state
   }
 }
+
+//Object.assign({}, state, {product: action.payload, loading: false})
 
 export const productDeleteReducer = (state={}, action) =>{
   switch(action.type){

@@ -20,9 +20,9 @@ const CartScreen = () => {
 
   const dispatch = useDispatch()
 
-  const removeFromCartHandler = (id) =>{
-    dispatch(removeFromCart(id))
-  }
+  // const removeFromCartHandler = (id) =>{
+  //   dispatch(removeFromCart(id))
+  // }
 
   const checkoutHandler =()=>{
     navigate('/login?redirect=shipping')
@@ -59,7 +59,7 @@ const CartScreen = () => {
                     <Link to={`/product/${item.product}`}>{item.name} </Link>
                   </Col>
                   <Col md={2} >
-                    &#8358;{`${(Number(item.price * qty)).toLocaleString()}`} 
+                    &#8358;{`${(item.price * qty).toLocaleString()}`} 
                   </Col>
                   <Col md={2}>
                     <Form.Select 
@@ -74,7 +74,7 @@ const CartScreen = () => {
                   </Col>
                   <Col md={2}>
                     <Button type='button' variant='light' 
-                    onClick={()=>removeFromCartHandler(item.product)}>
+                    onClick={()=>dispatch(removeFromCart(item.product))}>
                       <span className="material-icons">delete</span> 
                     </Button>
                   </Col>
@@ -93,7 +93,7 @@ const CartScreen = () => {
               </h2>
               &#8358;{Number(cartItems.reduce((acc, item)=> acc + item.price*item.qty, 0)).toLocaleString()}
             </ListGroup.Item>
-            <ListGroup.Item>
+            <ListGroup.Item className='mx-auto'>
               <Button type='button' className='btn-block' disabled={cartItems.length===0} 
               onClick={checkoutHandler}> 
                 Proceed to Checkout

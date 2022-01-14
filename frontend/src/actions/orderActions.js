@@ -111,7 +111,6 @@ export const orderMyListAction =()=> async(dispatch, getState)=>{
 
     const {userLogin:{userInfo}} = getState()
     const token = userInfo.token
-    console.log(token)
 
     const config = {
       headers: {

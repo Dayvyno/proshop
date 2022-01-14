@@ -41,7 +41,7 @@ const ProfileScreen = () => {
         dispatch({type: USER_UPDATE_PROFILE_RESET})
         dispatch(getUserDetails('profile'))
         dispatch(orderMyListAction())
-      } 
+      }
       else{
         setName(user.name)
         setEmail(user.email)
@@ -90,8 +90,10 @@ const ProfileScreen = () => {
             <Form.Control onChange={(e)=>setConfirmPassword(e.target.value)} 
             type='password' placeholder='Confirm password' value={confirmPassword}/>
           </Form.Group>
+          <Form.Group className='d-flex justify-content-center' >
+            <Button className='my-2' type='submit' variant='primary'>Update</Button>
+          </Form.Group>
 
-          <Button className='my-2' type='submit' variant='primary'>Update</Button>
         </Form>
       </Col>
       <Col md={9}>

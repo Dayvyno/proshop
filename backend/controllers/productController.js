@@ -6,7 +6,7 @@ import Product from '../models/productModel.js'
 // @access Public
 const getProducts =async(req, res)=>{
   try {
-    const pageSize = 10 //Number of items in a page
+    const pageSize = 12 //Number of items in a page
     const page = Number(req.query.pageNumber) || 1 //current page
   
     const searchparams = req.query.searchparams? {
@@ -29,7 +29,7 @@ const getProducts =async(req, res)=>{
   } catch (error) {
     res.status(404).json({
       message: 'Failed to fetch data',
-      systemMessage: error
+      systemMessage: process.env.NODE_ENV==='production'? null:error
     })
   }
 }
@@ -45,7 +45,7 @@ const getProductById=async (req, res)=>{
   } catch (error) {
     res.status(404).json({
       message: 'Failed to fetch data',
-      systemMessage: error 
+      systemMessage: process.env.NODE_ENV==='production'? null:error
     })
   }
 }
@@ -109,7 +109,7 @@ const deleteProduct=async (req, res)=>{
 
 // @desc  Update a product
 // @route PUT /api/products/:id
-// @access /Private/Admin
+// @access Private/Admin
 const updateProduct=async (req, res)=>{
     
   try {
@@ -151,7 +151,7 @@ const updateProduct=async (req, res)=>{
   } catch (error) {
     res.status(404).json({
       message: 'Server could not Update product',
-      systemMessage: error 
+      systemMessage: process.env.NODE_ENV==='production'? null:error
     })
     
   }
@@ -171,7 +171,6 @@ const createProductReview=async (req, res)=>{
       const alreadyreviewed  =  product.reviews.find(r=> 
         r.user.toString()===req.user._id.toString())
         if (alreadyreviewed){
-          console.log('I got here too')
           res.status(400).json('product already reviewed by you')
         } else{
           const review = {
@@ -183,7 +182,7 @@ const createProductReview=async (req, res)=>{
           product.reviews.push(review)
           product.numReviews = product.reviews.length
           product.rating = 
-          product.reviews.reduce((acc, item)=>acc + item.rating, 0)/product.reviews.length
+          product.reviews.reduce((acc, review)=>acc + review.rating, 0)/product.reviews.length
 
           await product.save()
           res.status(201).json({message: 'Review added'})
@@ -196,7 +195,7 @@ const createProductReview=async (req, res)=>{
   } catch (error) {
     res.status(404).json({
       message: 'Server could not Update review',
-      systemMessage: error 
+      systemMessage: process.env.NODE_ENV==='production'? null:error
     })
     
   }
@@ -207,13 +206,13 @@ const createProductReview=async (req, res)=>{
 // @access /Public
 const getTopProducts=async (req, res)=>{
     try {
-      const products = await Product.find({}).sort({rating:-1}).limit(3)
+      const products = await Product.find({}).sort({rating:-1}).limit(4)
       res.json(products)
       
     } catch (error) {
       res.status(400).json({
         message: "Could not get top Products",
-        systemMessage: error
+        systemMessage: process.env.NODE_ENV==='production'? null:error
       })
     }  
   }

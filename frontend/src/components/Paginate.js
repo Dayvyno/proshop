@@ -6,7 +6,7 @@ const Paginate = ({pages, page, isAdmin=false}) => {
   return (
     <div className='pagin'>
       {pages>1 && (
-        <Pagination>
+        <Pagination className='justify-content-center'>
           {[...Array(pages).keys()].map(x=>(
             <LinkContainer key={x+1} to={isAdmin? `/admin/productlist/${x+1}`:`/page/${x+1}`}>
               <Pagination.Item active={x +1 === page}> {x+1} </Pagination.Item>

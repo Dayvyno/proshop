@@ -38,15 +38,14 @@ const ProductEditScreen = () => {
     success: successUpdate
   } = productUpdateReducer
   
-
+//|| product._id !== params.id
   useEffect(() => {
-  
+
     if (successUpdate){
-      // dispatch(productUpdateResetAction())
       dispatch({type:PRODUCT_UPDATE_RESET})
       navigate('/admin/productlist')
     } else{
-      if (!product.name || product._id !== params.id){
+      if (!product.name ){
         dispatch(listProductDetails(params.id))
       }else{
         setName(product.name)
@@ -64,10 +63,8 @@ const ProductEditScreen = () => {
   const uploadFileHandler = async (e) => {
     const file = e.target.files[0]
     const formData = new FormData()
-    // console.log(`FormData: ${JSON.stringify(formData)}`)
     formData.append('image', file)
     setUploading(true)
-    // console.log(uploading)
 
     try {
       const config = {
@@ -138,17 +135,10 @@ const ProductEditScreen = () => {
                   placeholder='Enter image url' 
                   value={image}
                 ></Form.Control>
-                {/* <Form.File
-                  id='image-file'
-                  label='Choose File'
-                  custom
-                  type='file'
-                  onChange={uploadFileHandler}
-                ></Form.File> */}
    
               </Form.Group>
               <Form.Group controlId="formFile" className="mb-3">
-                <Form.Label>Default file input example</Form.Label>
+                <Form.Label className='text-success'>Default file input example</Form.Label>
                 <Form.Control 
                   type="file"   
                   onChange={uploadFileHandler} 
@@ -178,8 +168,9 @@ const ProductEditScreen = () => {
                 <Form.Control onChange={(e)=>setDescription(e.target.value)} 
                 type='text' placeholder='Enter Description' value={description}/>
               </Form.Group>
-  
-              <Button className='my-2' type='submit' variant='primary'>Update</Button>
+              <Form.Group className='d-flex justify-content-center'>
+                <Button className='my-2' type='submit' variant='primary'>Update</Button>
+              </Form.Group>
             </Form>
           )
         }

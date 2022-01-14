@@ -5,7 +5,7 @@
 
 } */
 
-body {
+.body {
   min-height: 80vh;
 }
 .latest {
@@ -28,6 +28,19 @@ body {
   h3 {
     font-size: 12px;
   }
+  .tooltipD {
+    font-size: 10px;
+  }
+  .poTextColor {
+    color: blue;
+    text-decoration: underline;
+    font-size: 14px;
+  }
+}
+
+.poTextColor {
+  color: blue;
+  text-decoration: underline;
 }
 
 .loader {
@@ -52,11 +65,6 @@ body {
 .dropdownLink:hover {
   background-color: rgba(0, 153, 51, 0.4);
   border-radius: 5px;
-}
-
-.poTextColor {
-  color: blue;
-  text-decoration: underline;
 }
 
 .reviewlogin {

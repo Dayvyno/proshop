@@ -16,8 +16,8 @@ const PlaceOrderScreen = () => {
   const cart = useSelector(state => state.cart)
 
   // Calculate Prices
-  cart.itemsPrice = cart.cartItems.reduce((total, value)=>
-  total + value.price * value.qty, 0)
+  cart.itemsPrice = cart.cartItems.reduce((total, cartItem)=>
+  total + cartItem.price * cartItem.qty, 0)
 
   cart.shippingPrice = Math.round(Number(cart.itemsPrice * 0.1)) 
 
@@ -49,7 +49,7 @@ const PlaceOrderScreen = () => {
   }
 
   return (
-    <>
+    <div>
       <CheckoutSteps step1 step2 step3 step4/>
       <Row>
         <Col md={8}>
@@ -79,7 +79,7 @@ const PlaceOrderScreen = () => {
                     {cart.cartItems.map((item, index)=>(
                       <ListGroup.Item key={index}>
                         <Row>
-                          <Col md={1}>
+                          <Col xs={2} md={1}>
                             <Image src={item.image} alt={item.name} fluid rounded />
                           </Col>
                           <Col>
@@ -102,7 +102,7 @@ const PlaceOrderScreen = () => {
           <Card>
             <ListGroup variant='flush'>
               <ListGroup.Item>
-                <h2>Order Summary</h2>
+                <Col><h2>Order Summary</h2></Col>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
@@ -134,8 +134,8 @@ const PlaceOrderScreen = () => {
               <ListGroup.Item>
                 {error && <Message variant={'danger'}>{error}</Message>}
               </ListGroup.Item>
-              <ListGroup.Item>
-                <Button type='button'
+              <ListGroup.Item className='d-flex justify-content-center'>
+                <Button type='button' 
                   disable={cart.cartItems.length===0? true:undefined} 
                   onClick={placeOrderHandler}  
                 >Place Order</Button>
@@ -145,7 +145,7 @@ const PlaceOrderScreen = () => {
           </Card>
         </Col>
       </Row>
-    </>
+    </div>
   )
 }
 

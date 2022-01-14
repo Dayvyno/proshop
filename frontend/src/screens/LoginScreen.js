@@ -25,7 +25,7 @@ const LoginScreen = () => {
   
   useEffect(()=>{
     if (userInfo){
-      navigate(redirect)
+      navigate(redirect) //will take you to /login/shipping if location.search exists
     }
   }, [userInfo, redirect, navigate])
   

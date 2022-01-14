@@ -18,20 +18,21 @@ const addOrderItems =async(req, res)=>{
     } = req.body
 
     if (orderItems && orderItems.length===0){
-      res.status(400).json({
+      return res.status(400).json({
         message: "No item has been selected"
       })
-      return 
+      //return 
     } else{
       const order = new Order ({
-        user: req.user._id,  //3
+        user: req.user._id,  
         orderItems, 
         shippingAddress, 
         paymentMethod, 
         itemsPrice, 
         taxPrice,
         shippingPrice,
-        totalPrice
+        totalPrice,
+        paymentResult: {}
       })
       const createOrder = await order.save()
 
@@ -49,7 +50,7 @@ const addOrderItems =async(req, res)=>{
   } catch (error) {
     res.status(404).json({
       message: 'Order could not be placed, server error',
-      systemMessage: error
+      systemMessage: process.env.NODE_ENV==='production'? null: error
     })
   }
 }
@@ -70,7 +71,8 @@ const getOrderById =async(req, res)=>{
 
   } catch (error) {
     res.status(400).json({
-      message: 'Order not found'
+      message: 'Order not found',
+      systemMessage: process.env.NODE_ENV==='production'? null: error
     })
   }
 }
@@ -104,15 +106,14 @@ const updateOrderToPaid =async(req, res)=>{
 
   } catch (error) {
     res.status(400).json({
-      message: 'Order could not be updated'
+      message: 'Order could not be updated',
+      systemMessage: process.env.NODE_ENV==='production'? null: error
     })
   }
 }
 
-
-
 // @desc  Get logged in user orders
-// @route put /api/orders/myorders
+// @route GET /api/orders/myorders
 // @access Private
 const getMyOrders =async(req, res)=>{
   try {
@@ -121,7 +122,8 @@ const getMyOrders =async(req, res)=>{
 
   } catch (error) {
     res.status(400).json({
-      message: 'Order could not be updated'
+      message: 'Order could not be updated',
+      systemMessage: process.env.NODE_ENV==='production'? null: error
     })
   }
 }
@@ -137,7 +139,8 @@ const getOrders =async(req, res)=>{
 
   } catch (error) {
     res.status(400).json({
-      message: 'Orders not found'
+      message: 'Orders not found',
+      systemMessage: process.env.NODE_ENV==='production'? null: error
     })
   }
 }
@@ -166,7 +169,8 @@ const updateOrderToDelivered =async(req, res)=>{
 
   } catch (error) {
     res.status(400).json({
-      message: 'Order could not be updated'
+      message: 'Order could not be updated',
+      systemMessage: process.env.NODE_ENV==='production'? null: error
     })
   }
 }

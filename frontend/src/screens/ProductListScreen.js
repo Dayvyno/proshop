@@ -45,7 +45,8 @@ const ProductListScreen = () => {
 
   useEffect(() => {
 
-    dispatch(productCreateResetAction())
+    dispatch(productCreateResetAction()) //This is here because after creating
+    // and updating the product, it will navigate back here, so we need to reset
 
     if (!userInfo.isAdmin){
       navigate('/login')
@@ -96,7 +97,7 @@ const ProductListScreen = () => {
       {errorDelete && <Message variant={'danger'}>{error}</Message>}
       {products && (
         <>
-          <Table striped bordered hover responsive className='table-sm'>
+          <Table striped bordered hover responsive className='table-xs table-sm '>
             <thead>
               <tr>
                 <th>ID</th>

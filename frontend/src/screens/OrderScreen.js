@@ -51,7 +51,7 @@ const OrderScreen = () => {
       script.type = 'text/javascript'
       script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`
       script.async = true
-      script.onload = ()=>setSdkReady(true)
+      script.onload = ()=>setSdkReady(true) //Tells us if the paypal script has been loaded
       document.body.appendChild(script)
     }
 
@@ -59,11 +59,11 @@ const OrderScreen = () => {
     //1. When !order
     //2. When successPay. this happens later after running successPaymentHandler
     if (!order || successPay || successDeliver){ 
-      console.log(params.id)
       dispatch({type: ORDER_DELIVER_RESET})
       dispatch(orderPaymentResetAtion()) //without this, when you pay, it keeps refreshing
       dispatch(getOrderDetailsAction(params.id))
-    } else if(!order.isPaid ){
+    } 
+    else if(!order.isPaid ){
       if(!window.paypal){
         addPayPalScript()
       }else{
@@ -79,7 +79,7 @@ const OrderScreen = () => {
   }
 
   const successPaymentHandler = (paymentResult)=>{
-    console.log(paymentResult)
+    // console.log(paymentResult)
     dispatch(orderPaymentAction(params.id, paymentResult))
   }
 

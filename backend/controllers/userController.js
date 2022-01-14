@@ -110,7 +110,7 @@ const registerUser =async(req, res)=>{
 // @access Private
 const UpdateUserProfile =async(req, res)=>{
   try {
-    const user = await User.findById(req.user._id).select('-password') //2
+    const user = await User.findById(req.user._id).select('-password') 
     
     if(user){
       user.name = req.body.name || user.name
@@ -124,9 +124,9 @@ const UpdateUserProfile =async(req, res)=>{
         res.json({
           _id: updatedUser._id,
           name: updatedUser.name,
-          email:updatedUser.email,
+          email: updatedUser.email,
           isAdmin: updatedUser.isAdmin,
-          token: generateToken(updatedUser._id)
+          token: generateToken(updatedUser._id) // Because the _id will be changed by mondoDB
         })
       } else {res.status(400).json({message: "Could not access new profile change"})}
 
@@ -165,7 +165,7 @@ const deleteUserByAdmin =async(req, res)=>{
   try {
     const user = await User.findById(req.params.id)
     if (user){
-      user.remove()
+      await user.remove()
       res.json({message: "User Deleted"})
     }else{
       res.status(404).json('User not found')
@@ -203,7 +203,7 @@ const adminGetUserById =async(req, res)=>{
 }
 
 // @desc  Update user Profile by Admin
-// @route PUT /api/users/user/:
+// @route PUT /api/users/user/:id
 // @access Private/Admin
 const updateUserByAdmin =async(req, res)=>{
   try {

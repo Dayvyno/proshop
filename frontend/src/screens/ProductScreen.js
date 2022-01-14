@@ -8,6 +8,7 @@ import Loader from '../components/Loader';
 import Message from '../components/Message'
 import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productsConstants';
 import Meta from '../components/Meta';
+import Tooltips from '../components/Tooltips';
 
 
 
@@ -73,7 +74,7 @@ const ProductScreen = () => {
           <Col md={4}>
             <ListGroup variant='flush'>
               <ListGroup.Item>{product.name}</ListGroup.Item>
-              <ListGroup.Item><Rating value={product.rating} text={`${product.numReviews} ${product.numReviews>1? 'reviews': 'review'}`} /></ListGroup.Item>
+              <ListGroup.Item ><Rating value={product.rating} text={`${product.numReviews} ${product.numReviews>1? 'reviews': 'review'}`} /></ListGroup.Item>
               <ListGroup.Item>Price: &#8358;{`${Number(product.price).toLocaleString()}`}</ListGroup.Item>
               <ListGroup.Item>Description: {product.description}</ListGroup.Item>
             </ListGroup>
@@ -115,7 +116,7 @@ const ProductScreen = () => {
               </ListGroup.Item>)
               }
 
-                <ListGroup.Item>
+                <ListGroup.Item className='mx-auto'>
                   <Button disabled={product.countInStock===0} 
                   className='btn-block' type='button'
                   onClick={addToCartHandler}
@@ -136,8 +137,8 @@ const ProductScreen = () => {
                 <ListGroup.Item key={review._id}>
                   <strong> {review.name} </strong>
                   <Rating value={review.rating}/>
-                  <p>{review.createdAt.substring(0, 10)} </p>
-                  <p>{review.comment} </p>
+                  <p>{review.createdAt.substring(0, 10)} <br/> {review.comment} </p>
+                  {/* <p>{review.comment} </p> */}
                 </ListGroup.Item>
               ))}
               <ListGroup.Item>
@@ -147,7 +148,7 @@ const ProductScreen = () => {
                   <Form onSubmit={submitHandler}>
                     <Form.Group controlId='rating'>
                       <Form.Label>Rating</Form.Label>
-                      <Form.Control as='select' value={rating} 
+                      <Form.Select value={rating} 
                         onChange={(e)=>setRating(e.target.value)}>
                           <option value=''>Select</option>
                           <option value='1'>1-Poor</option>
@@ -155,7 +156,7 @@ const ProductScreen = () => {
                           <option value='3'>3-Good</option>
                           <option value='4'>4-Very Good</option>
                           <option value='5'>5-Excellent</option>
-                        </Form.Control>
+                        </Form.Select>
                     </Form.Group>
                     <Form.Group controlId='comment'>
                       <Form.Label>Comment</Form.Label>
@@ -163,16 +164,21 @@ const ProductScreen = () => {
                         onChange={(e)=>setComment(e.target.value)}
                       ></Form.Control>
                     </Form.Group>
-                    <Form.Group>
-                      <Button type='submit' variant='primary'>Submit</Button>
+                    <Form.Group className='mt-2 d-flex justify-content-center '>  
+                      <Button className='btn-block'type='submit' variant='primary'>
+                        Submit
+                      </Button>
                     </Form.Group>
+
                   </Form>
                 ) :(
-                <Message>
-                  Please login to add a customer review
-                  <span style={{color:'green'}} className="material-icons">double_arrow</span>
-                  <Link className='reviewlogin' to={'/login'}>Login</Link> 
-                </Message>
+                <>
+                  Please {' '}                 
+                  <Link to={'/login'}>
+                    <Tooltips className='mx-3' tipText={'click to login'} target={'Login'} size='sm' />
+                  </Link> {' '}
+                  to add a customer review
+                </>
                 )}
               </ListGroup.Item>
             </ListGroup>
